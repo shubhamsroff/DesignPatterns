@@ -18,21 +18,15 @@ public class User {
         this.name=userBuilder.getName();
         this.email=userBuilder.getEmail();
     }
-    public void setId(String id){
-        this.id=id;
-    }
+   
     public String getId(){
-        return id;
+        return this.id;
     }
-    public void setName(String name){
-        this.name=name;
-    }
+    
     public String getName(){
-        return name;
+        return this.name;
     }
-    public void setEmail(String email){
-        this.email=email;
-    }
+    
     public String getEmail(){
         return this.email;
     }
@@ -46,24 +40,21 @@ public class User {
         private String name;
         private String email;
 
-        public void setId(String id){
+        public UserBuilder setId(String id){
             this.id=id;
+            return this;
         }
-        public String getId(){
-            return id;
-        }
-        public void setName(String name){
+       
+        public UserBuilder setName(String name){
             this.name=name;
+            return this;
         }
-        public String getName(){
-            return name;
-        }
-        public void setEmail(String email){
+        
+        public UserBuilder setEmail(String email){
             this.email=email;
+            return this;
         }
-        public String getEmail(){
-            return this.email;
-        }
+       
         public User build(){
             return new User(this);
         }
