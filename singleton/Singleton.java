@@ -1,44 +1,37 @@
-
 package systemdesign.singleton;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
+public class Singleton implements Cloneable, Serializable {
 
-public class Singleton implements Cloneable,Serializable{
-    
-//    Eager Singleton Object Creation
-    
-//    private static final Singleton singleton=new Singleton();
-//    private Singleton(){
-//        
-//    }
-//    public static synchronized Singleton  getStudent(){
-//        return singleton;
-//    }
-    
-    
-//    Lazy Initialization
     private static volatile Singleton singleton;
-    private Singleton() throws Exception{
-        if(singleton!=null){
-            throw new Exception("Already initialized...");
+    private static boolean instanceCreated = false;
+
+    private Singleton() {
+        if (instanceCreated) {
+            throw new RuntimeException("Reflection not allowed: Singleton already created");
         }
+        instanceCreated = true;
     }
-    
-    public static  Singleton getSingleton() throws Exception{
-        if(singleton ==null){
-            synchronized(Singleton.class){
-                singleton=new Singleton();
+
+    public static Singleton getSingleton() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
             }
         }
-       
         return singleton;
     }
-    
+
     @Override
-    protected Object clone() throws CloneNotSupportedException{
-        return singleton;
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException("Cloning of this singleton is not allowed");
     }
-    
-    
-}       
+
+    protected Object readResolve() throws ObjectStreamException {
+        return getSingleton();
+    }
+}
